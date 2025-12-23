@@ -255,6 +255,7 @@ def cleanup_old_ips():
     ip_requests = {ip: timestamp for ip, timestamp in ip_requests.items() if timestamp > cutoff_time}
 
 if __name__ == '__main__':
+    # Load and print config (same as before)
     config = load_config()
     if config and 'endpoints' in config:
         print("\nConfigured endpoints:")
@@ -270,4 +271,6 @@ if __name__ == '__main__':
         print(f"  Check duplicate tokens: {security.get('check_duplicate_tokens', True)}")
         print("  Username validation: Via player head API")
     
-    app.run(port=5000, debug=True)
+    # Use Render's PORT environment variable, fallback to 5000 for local development
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
